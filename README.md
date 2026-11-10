@@ -1,114 +1,114 @@
 # NothingFirefoxCss
 
-Theme `userChrome.css` / `userContent.css` tối giản cho Firefox: toolbar tự ẩn, layout **một dòng** (thanh địa chỉ + tab nằm chung một hàng), nền đen cho các trang nội bộ (New Tab, Settings, Add-ons).
+A minimal `userChrome.css` / `userContent.css` theme for Firefox: auto-hiding toolbars, a **single-line** layout (URL bar and tabs on the same row), and black backgrounds for internal pages (New Tab, Settings, Add-ons).
 
-> Dựa trên code của [Bali10050/FirefoxCSS](https://github.com/Bali10050/FirefoxCSS).
+> Based on code from [Bali10050/FirefoxCSS](https://github.com/Bali10050/FirefoxCSS).
 
-## Ảnh chụp
+## Screenshots
 
-**Toolbar ẩn**: chỉ còn nội dung trang
+**Toolbars hidden**: only the page content is visible
 
-![Toolbar ẩn](screenshots/hidden.png)
+![Toolbars hidden](screenshots/hidden.png)
 
-**Toolbar hiện** (rê chuột lên mép trên cửa sổ, hoặc ghim bằng `Ctrl+Shift+B`): thanh địa chỉ bên trái, tab bên phải, tất cả trên một dòng
+**Toolbars visible** (hover the top edge of the window, or pin them with `Ctrl+Shift+B`): URL bar on the left, tabs on the right, all in one row
 
-![Toolbar một dòng](screenshots/toolbar.png)
+![Single-line toolbar](screenshots/toolbar.png)
 
-**about:addons**: gọn hơn, nền đen
+**about:addons**: compact layout, black background
 
 ![Add-ons](screenshots/addons.png)
 
-**about:preferences**: nền đen
+**about:preferences**: black background
 
 ![Settings](screenshots/preferences.png)
 
-## Tính năng
+## Features
 
-- Ẩn tab bar, nav bar và bookmarks bar khi không dùng; **rê chuột lên mép trên cửa sổ** để hiện lại.
-- **`Ctrl+Shift+B`** để ghim tab và thanh địa chỉ luôn hiển thị (bookmarks bar vẫn ẩn). Bấm lần nữa để quay về chế độ tự ẩn.
-- Layout một dòng khi cửa sổ rộng ≥ 950px; hẹp hơn thì tự chuyển về hai dòng.
-- Ẩn các nút ít dùng: menu ☰, forward, reload, star, reader mode, PiP, translate, all-tabs.
-- Nút đóng tab chỉ hiện khi rê chuột.
-- Nền đen cho New Tab, Home, Private Browsing, `about:preferences`, `about:addons`.
+- Tab bar, nav bar and bookmarks bar are hidden when not in use. **Hover the top edge of the window** to reveal them.
+- **`Ctrl+Shift+B`** pins the tabs and URL bar so they stay visible (the bookmarks bar stays hidden). Press it again to return to auto-hide.
+- Single-line layout when the window is at least 950px wide; narrower windows fall back to two rows.
+- Hides rarely used buttons: ☰ menu, forward, reload, star, reader mode, PiP, translate, all-tabs.
+- Tab close buttons only appear on hover.
+- Black background for New Tab, Home, Private Browsing, `about:preferences` and `about:addons`.
 
-## Cài đặt
+## Installation
 
 ### Windows
 
-1. Tải repo về (Code → Download ZIP) rồi giải nén.
-2. Nhấp đúp **`install.bat`**.
-3. Chọn profile (Enter = profile mặc định, `A` = tất cả profile).
-4. Nếu Firefox đang mở, script sẽ hỏi có muốn đóng không. Chọn `Y` thì Firefox được đóng và mở lại sau khi cài.
+1. Download the repo (Code → Download ZIP) and extract it.
+2. Double-click **`install.bat`**.
+3. Pick a profile (Enter = default profile, `A` = all profiles).
+4. If Firefox is running, the script asks whether to close it. Answer `Y` and Firefox is closed, then reopened after the install.
 
-Có thể chạy trong `cmd` với tham số:
+You can also run it from `cmd` with arguments:
 
 ```bat
-install.bat                          :: chọn profile
-install.bat --all                    :: cài cho tất cả profile
-install.bat "C:\path\to\profile"     :: cài vào một profile cụ thể
-install.bat --uninstall              :: gỡ theme
+install.bat                          :: pick a profile
+install.bat --all                    :: install into every profile
+install.bat "C:\path\to\profile"     :: install into a specific profile
+install.bat --uninstall              :: remove the theme
 install.bat --uninstall --all
 ```
 
-### Linux (và macOS)
+### Linux (and macOS)
 
 ```bash
 git clone <repo-url> NothingFirefoxCss
 cd NothingFirefoxCss
 chmod +x install.sh
-./install.sh            # chọn profile
-./install.sh --all      # cài cho tất cả profile
+./install.sh            # pick a profile
+./install.sh --all      # install into every profile
 ./install.sh ~/.mozilla/firefox/xxxx.default-release
 ./install.sh --uninstall
 ```
 
-Script tự tìm profile ở các vị trí sau:
+The script looks for profiles in these locations:
 
-| Kiểu cài Firefox | Thư mục |
+| Firefox install type | Directory |
 |---|---|
 | deb / rpm / tarball | `~/.mozilla/firefox` |
-| XDG (Firefox mới) | `~/.config/mozilla/firefox` |
+| XDG (newer Firefox) | `~/.config/mozilla/firefox` |
 | Snap | `~/snap/firefox/common/.mozilla/firefox` |
 | Flatpak | `~/.var/app/org.mozilla.firefox/.mozilla/firefox` |
 | macOS | `~/Library/Application Support/Firefox` |
 
-### Script làm gì?
+### What the scripts do
 
-1. Nếu profile đã có `chrome/userChrome.css` thì backup cả thư mục `chrome` thành `chrome.backup-<ngày-giờ>`.
-2. Copy `userChrome.css` và `userContent.css` vào `<profile>/chrome/`.
-3. Ghi vào `<profile>/user.js` (dòng cũ của cùng pref sẽ được thay, không bị trùng):
+1. If the profile already has `chrome/userChrome.css`, the whole `chrome` folder is backed up to `chrome.backup-<date-time>`.
+2. `userChrome.css` and `userContent.css` are copied into `<profile>/chrome/`.
+3. These prefs are written to `<profile>/user.js` (any existing line for the same pref is replaced, so nothing is duplicated):
    ```js
-   user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true); // bật userChrome.css
-   user_pref("browser.toolbars.bookmarks.visibility", "always");          // bookmarks bar hiện khi hover
+   user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true); // enable userChrome.css
+   user_pref("browser.toolbars.bookmarks.visibility", "always");          // bookmarks bar shows on hover
    ```
 
-### Cài thủ công
+### Manual installation
 
-1. Mở `about:support` → **Profile Folder** → **Open Folder**.
-2. Tạo thư mục `chrome` trong đó, copy `userChrome.css` và `userContent.css` vào.
-3. Mở `about:config`, đặt `toolkit.legacyUserProfileCustomizations.stylesheets` = `true`.
-4. Khởi động lại Firefox.
+1. Open `about:support` → **Profile Folder** → **Open Folder**.
+2. Create a `chrome` folder there and copy `userChrome.css` and `userContent.css` into it.
+3. Open `about:config` and set `toolkit.legacyUserProfileCustomizations.stylesheets` to `true`.
+4. Restart Firefox.
 
-## Gỡ cài đặt
+## Uninstall
 
-Chạy `install.bat --uninstall` (Windows) hoặc `./install.sh --uninstall` (Linux). Lệnh này xoá hai file CSS khỏi `chrome/`. Muốn khôi phục theme cũ thì copy nội dung từ `chrome.backup-*` vào lại `chrome`.
+Run `install.bat --uninstall` (Windows) or `./install.sh --uninstall` (Linux). This deletes the two CSS files from `chrome/`. To restore your previous theme, copy the contents of a `chrome.backup-*` folder back into `chrome`.
 
-## Tuỳ chỉnh
+## Customization
 
-Sửa `userChrome.css` (bản trong repo rồi chạy lại script, hoặc sửa trực tiếp trong `<profile>/chrome/`) rồi khởi động lại Firefox:
+Edit `userChrome.css` (either the copy in this repo, then rerun the script, or the one in `<profile>/chrome/`) and restart Firefox:
 
-| Biến / selector | Ý nghĩa | Mặc định |
+| Variable / selector | Purpose | Default |
 |---|---|---|
-| `--NavbarWidth` | Độ rộng thanh địa chỉ (% chiều ngang) | `36` |
-| `--TabsHeight` | Chiều cao tab | `25` |
-| `--tab-border-radius` | Bo góc tab | `15px` |
-| `#navigator-toolbox { background }` | Màu nền toolbar | `#181825` |
+| `--NavbarWidth` | URL bar width (% of window width) | `36` |
+| `--TabsHeight` | Tab height | `25` |
+| `--tab-border-radius` | Tab corner radius | `15px` |
+| `#navigator-toolbox { background }` | Toolbar background color | `#181825` |
 
-Muốn hiện lại một nút bị ẩn (vd. reload): xoá hoặc comment selector tương ứng (`#reload-button`) trong khối `display: none`.
+To bring back a hidden button (e.g. reload), remove or comment out its selector (`#reload-button`) in the `display: none` block.
 
-## Xử lý sự cố
+## Troubleshooting
 
-- **Theme không có tác dụng**: kiểm tra `about:config` → `toolkit.legacyUserProfileCustomizations.stylesheets` phải là `true`, và đúng profile đang dùng (xem `about:profiles`).
-- **Cài nhầm profile**: chạy lại script và chọn profile có đánh dấu `(default)`, hoặc dùng `--all`.
-- **Toolbar không hiện khi hover**: rê chuột sát mép trên cùng của cửa sổ, hoặc bấm `Ctrl+Shift+B` để ghim.
-- **Firefox Snap/Flatpak**: profile nằm trong sandbox, script đã hỗ trợ sẵn. Nếu không tìm thấy, truyền đường dẫn profile trực tiếp.
+- **Theme has no effect**: in `about:config`, `toolkit.legacyUserProfileCustomizations.stylesheets` must be `true`. Also make sure you installed into the profile you actually use (see `about:profiles`).
+- **Installed into the wrong profile**: rerun the script and choose the one marked `(default)`, or use `--all`.
+- **Toolbars don't appear on hover**: move the mouse to the very top edge of the window, or press `Ctrl+Shift+B` to pin them.
+- **Snap/Flatpak Firefox**: the profile lives inside the sandbox, which the script already supports. If it isn't found, pass the profile path directly.
